@@ -76,14 +76,14 @@ public class PopulateDb extends DomainDrivenDataPopulation {
         LOGGER.info("Creating and populating the development database...");
         
         setupUser(User.system_users.SU, "helsinki");
-        setupPerson(User.system_users.SU, "helsinki");
+        setupPerson(User.system_users.SU, "helsinki", "Super", "User");
 
         LOGGER.info("Completed database creation and population.");
 	}
 
-    private void setupPerson(final User.system_users defaultUser, final String emailDomain) {
+    private void setupPerson(final User.system_users defaultUser, final String emailDomain, final String name, final String surname) {
         final User su = co(User.class).findByKey(defaultUser.name());
-        save(new_(Person.class).setEmail(defaultUser + "@" + emailDomain).setDesc("Super Person").setUser(su));
+        save(new_(Person.class).setEmail(defaultUser + "@" + emailDomain).setDesc("Super Person").setUser(su).setName(name).setSurname(surname));
     }
 
     @Override

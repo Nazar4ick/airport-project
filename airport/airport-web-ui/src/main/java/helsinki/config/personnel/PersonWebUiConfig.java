@@ -107,7 +107,7 @@ public class PersonWebUiConfig {
     private EntityMaster<Person> createMaster() {
         final String layout = cell(
                 cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
-               .cell(cell().layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
+               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
                .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
                .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))
                .cell(cell(CELL_LAYOUT).skip().layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)),
@@ -118,7 +118,8 @@ public class PersonWebUiConfig {
                 .addProp("email").asSinglelineText().also()
                 .addProp("active").asCheckbox().also()
                 // row 2
-                .addProp("desc").asMultilineText().also()
+                .addProp("name").asSinglelineText().also()
+                .addProp("surname").asSinglelineText().also()
                 // row 3
                 .addProp("employeeNo").asSinglelineText().also()
                 .addProp("title").asSinglelineText().also()

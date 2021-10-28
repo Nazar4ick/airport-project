@@ -20,6 +20,7 @@ import ua.com.fielden.platform.entity.annotation.MapEntityTo;
 import ua.com.fielden.platform.entity.annotation.MapTo;
 import ua.com.fielden.platform.entity.annotation.Observable;
 import ua.com.fielden.platform.entity.annotation.Readonly;
+import ua.com.fielden.platform.entity.annotation.Required;
 import ua.com.fielden.platform.entity.annotation.SkipEntityExistsValidation;
 import ua.com.fielden.platform.entity.annotation.Title;
 import ua.com.fielden.platform.entity.annotation.Unique;
@@ -58,11 +59,13 @@ public class Person extends ActivatableAbstractEntity<DynamicEntityKey> {
 
     @IsProperty
     @MapTo
+    @Required
     @Title(value = "First name", desc = "Represents the person's first name")
     private String name;
     
     @IsProperty
     @MapTo
+    @Required
     @Title(value = "Surname", desc = "Represents the person's second name")
     private String surname;
     
