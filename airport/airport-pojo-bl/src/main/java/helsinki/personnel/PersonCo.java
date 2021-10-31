@@ -23,7 +23,7 @@ import ua.com.fielden.platform.utils.EntityUtils;
  */
 public interface PersonCo extends IEntityDao<Person> {
     static final IFetchProvider<Person> FETCH_PROVIDER = EntityUtils.fetch(Person.class)
-            .with("email", "desc", "user", "title", "employeeNo", "phone", "mobile");
+            .with("email", "name", "surname", "desc", "user", "title", "employeeNo", "phone", "mobile");
     
     static final java.util.function.Supplier<Result> CURR_PERSON_IS_MISSING = () -> failure("Current person is missing.");
     static final String ERR_THERE_IS_NO_PERSON_ASSOCIATED_WITH_USER = "There is no " + Person.ENTITY_TITLE + " associated with User [%s].";

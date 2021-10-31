@@ -19,6 +19,7 @@ import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
 import ua.com.fielden.platform.utils.IUniversalConstants;
 
 import helsinki.personnel.Person;
+import helsinki.personnel.PersonCo;
 import helsinki.test_config.AbstractDaoTestCase;
 
 
@@ -44,6 +45,14 @@ public class PersonnelTest extends AbstractDaoTestCase {
     	assertTrue(person.isActive());
     }
 
+    @Test
+    public void users_have_desc_that_is_a_concatenation_of_properties_name_and_surname() {
+        final Person person = co(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD@organisation.com");
+        assertEquals("Ronald", person.getName());
+        assertEquals("McDonald", person.getSurname());
+        assertEquals("Ronald McDonald", person.getDesc());
+    }
+    
     @Test
     public void user_JC_is_present_but_not_active() {
         final Person person = co(Person.class).findByKey("JC@organisation.com");
@@ -99,8 +108,8 @@ public class PersonnelTest extends AbstractDaoTestCase {
         }
 
     	// Here the three Person entities are persisted using the the inherited from TG testing framework methods.
-        save(new_(Person.class).setEmail("RMD@organisation.com").setDesc("Ronald McDonald").setActive(true));
-        save(new_(Person.class).setEmail("JC@organisation.com").setDesc("John Carmack").setActive(false));
+        save(new_(Person.class).setEmail("RMD@organisation.com").setActive(true).setName("Ronald").setSurname("McDonald"));
+        save(new_(Person.class).setEmail("JC@organisation.com").setName("John").setSurname("Carmack").setActive(false));
     }
 
 }
