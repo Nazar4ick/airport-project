@@ -46,7 +46,7 @@ public class PersonnelTest extends AbstractDaoTestCase {
     }
 
     @Test
-    public void user_RMD_has_desc_Ronald_McDonald() {
+    public void users_have_desc_that_is_a_concatenation_of_properties_name_and_surname() {
         final Person person = co(Person.class).findByKeyAndFetch(PersonCo.FETCH_PROVIDER.fetchModel(), "RMD@organisation.com");
         assertEquals("Ronald", person.getName());
         assertEquals("McDonald", person.getSurname());

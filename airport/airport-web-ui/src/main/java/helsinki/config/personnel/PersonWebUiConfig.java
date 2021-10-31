@@ -66,7 +66,8 @@ public class PersonWebUiConfig {
     private EntityCentre<Person> createCentre(final IWebUiBuilder builder) {
         final String layout = cell(
                 cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN))  // row 1 -> 1, 2
-               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)), // row 2 -> 3, 4
+               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)) // row 2 -> 3, 4
+               .cell(cell().repeat(2).layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)), // row 3 -> 5, 6
                PADDING_LAYOUT).toString();
 
         final EntityActionConfig standardNewAction = StandardActions.NEW_ACTION.mkAction(Person.class);
@@ -85,15 +86,19 @@ public class PersonWebUiConfig {
                 .addCrit("this").asMulti().autocompleter(Person.class).also()
                 .addCrit("desc").asMulti().text().also()
                 // row 2
+                .addCrit("name").asMulti().text().also()
+                .addCrit("surname").asMulti().text().also()
+                // row 3
                 .addCrit("employeeNo").asMulti().text().also()
                 .addCrit("title").asMulti().text()
                 .setLayoutFor(Device.DESKTOP, Optional.empty(), layout)
                 .setLayoutFor(Device.TABLET, Optional.empty(), layout)
                 .setLayoutFor(Device.MOBILE, Optional.empty(), layout)
                 .addProp("this").order(1).asc().minWidth(70)
-                    .withSummary("total_count_", "COUNT(SELF)", "Count:The total number of matching Person.")
+                    .withSummary("total_count_", "COUNT(SELF)", "Count:The total number of matching Person records.")
                     .withAction(standardEditAction).also()
-                .addProp("desc").minWidth(200).also()
+                .addProp("name").minWidth(100).also()
+                .addProp("surname").minWidth(100).also()
                 .addProp("title").minWidth(200).also()
                 .addProp("employeeNo").minWidth(70).also()
                 .addProp("phone").minWidth(70).also()
