@@ -19,7 +19,7 @@ import ua.com.fielden.platform.error.Result;
 import ua.com.fielden.platform.security.user.User;
 import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
 import ua.com.fielden.platform.utils.IUniversalConstants;
-
+import helsinki.common.validators.NoSpacesValidator;
 import helsinki.personnel.Person;
 import helsinki.personnel.PersonCo;
 import helsinki.test_config.AbstractDaoTestCase;
@@ -63,6 +63,20 @@ public class AssetClassTest extends AbstractDaoTestCase {
         assertNotNull(validationResult);
         assertFalse(validationResult.isSuccessful());
         assertEquals("Value should not be longer than 50 characters.", validationResult.getMessage());
+    }
+    
+    @Test
+    public void name_cannot_contain_spaces() {
+        final var assetClass = co(AssetClass.class).new_().setName("Building").setDesc("Property, buildings, carparks");
+        assetClass.setName("Name with spaces");
+        final MetaProperty<String> mpName = assetClass.getProperty("name");
+        assertFalse(mpName.isValid());
+        final Result validationResult = mpName.getFirstFailure();
+        assertEquals(NoSpacesValidator.ERR_CONTAINS_SPACES, validationResult.getMessage());
+        assertEquals("Building", assetClass.getName());
+        assetClass.setName("Building1");
+        assertTrue(mpName.isValid());
+        assertEquals("Building1", assetClass.getName());
     }
     
     @Override
