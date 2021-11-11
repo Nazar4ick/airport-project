@@ -11,13 +11,15 @@ import java.math.BigDecimal;
 import org.junit.Test;
 
 import ua.com.fielden.platform.dao.QueryExecutionModel;
+import ua.com.fielden.platform.entity.meta.MetaProperty;
 import ua.com.fielden.platform.entity.query.fluent.fetch;
 import ua.com.fielden.platform.entity.query.model.EntityResultQueryModel;
 import ua.com.fielden.platform.entity.query.model.OrderingModel;
+import ua.com.fielden.platform.error.Result;
 import ua.com.fielden.platform.security.user.User;
 import ua.com.fielden.platform.test.ioc.UniversalConstantsForTesting;
 import ua.com.fielden.platform.utils.IUniversalConstants;
-
+import helsinki.common.validators.NoSpacesValidator;
 import helsinki.personnel.Person;
 import helsinki.personnel.PersonCo;
 import helsinki.test_config.AbstractDaoTestCase;
@@ -47,6 +49,34 @@ public class AssetClassTest extends AbstractDaoTestCase {
         co(AssetClass.class).save(co(AssetClass.class).new_().setName("Building").setDesc("Property, buildings, carparks"));
         final var assetClass = co(AssetClass.class).findByKeyAndFetch(AssetClassCo.FETCH_PROVIDER.fetchModel(), "Building");
         assertTrue(assetClass.isActive());
+    }
+    
+    @Test
+    public void name_cannot_be_longer_than_50_characters() {
+        final var longName = "Building".repeat(50);
+        final var assetClass = co(AssetClass.class).new_().setName(longName).setDesc("Property, buildings, carparks");
+        final MetaProperty<String> mpName = assetClass.getProperty("name");
+        assertNull(mpName.getValue());
+        assertNull(assetClass.getName());
+        assertFalse(mpName.isValid());
+        final Result validationResult = mpName.getFirstFailure();
+        assertNotNull(validationResult);
+        assertFalse(validationResult.isSuccessful());
+        assertEquals("Value should not be longer than 50 characters.", validationResult.getMessage());
+    }
+    
+    @Test
+    public void name_cannot_contain_spaces() {
+        final var assetClass = co(AssetClass.class).new_().setName("Building").setDesc("Property, buildings, carparks");
+        assetClass.setName("Name with spaces");
+        final MetaProperty<String> mpName = assetClass.getProperty("name");
+        assertFalse(mpName.isValid());
+        final Result validationResult = mpName.getFirstFailure();
+        assertEquals(NoSpacesValidator.ERR_CONTAINS_SPACES, validationResult.getMessage());
+        assertEquals("Building", assetClass.getName());
+        assetClass.setName("Building1");
+        assertTrue(mpName.isValid());
+        assertEquals("Building1", assetClass.getName());
     }
     
     @Override
