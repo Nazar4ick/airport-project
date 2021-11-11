@@ -38,15 +38,14 @@ public class AssetTypeTest extends AbstractDaoTestCase {
     	final var assetType = co(AssetType.class).new_();
     	assetType.setName("Tower");
     	assetType.setDesc("Control tower");
-    	assetType.setAssetClass("Building");
-//    	co(AssetClass.class).save(co(AssetClass.class).new_().setName("Building").setDesc("Property, buildings, carparks"));
-//    	final var assetClass = co(AssetClass.class).findByKeyAndFetch(AssetClassCo.FETCH_PROVIDER.fetchModel(), "Building");
-//        assetType.setAssetClass(assetClass);
+    	co(AssetClass.class).save(co(AssetClass.class).new_().setName("Building").setDesc("Property, buildings, carparks"));
+    	final var assetClass = co(AssetClass.class).findByKeyAndFetch(AssetClassCo.FETCH_PROVIDER.fetchModel(), "Building");
+        assetType.setAssetClass(assetClass);
     	final var savedAssetType = co(AssetType.class).save(assetType);
     	assertNotNull(savedAssetType);
     	assertTrue(savedAssetType.isActive());
     	assertEquals("Tower", savedAssetType.getName());
-    	assertEquals("Building", savedAssetType.getAssetClass());
+    	assertEquals("Building", savedAssetType.getAssetClass().getName());
     }
     
     @Test

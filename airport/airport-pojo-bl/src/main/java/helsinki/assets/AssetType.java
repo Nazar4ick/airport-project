@@ -71,15 +71,15 @@ public class AssetType extends ActivatableAbstractEntity<DynamicEntityKey> {
     @IsProperty
     @MapTo
     @Title(value = "Asset Class", desc = "Associated asset class.")
-    private String assetClass;
+    private AssetClass assetClass;
 
     @Observable
-    public AssetType setAssetClass(final String assetClass) {
+    public AssetType setAssetClass(final AssetClass assetClass) {
         this.assetClass = assetClass;
         return this;
     }
 
-    public String getAssetClass() {
+    public AssetClass getAssetClass() {
         return assetClass;
     }
     
