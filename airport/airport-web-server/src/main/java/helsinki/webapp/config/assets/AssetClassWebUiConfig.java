@@ -86,7 +86,8 @@ public class AssetClassWebUiConfig {
                 .withScrollingConfig(standardStandaloneScrollingConfig(0))
                 .addProp("this").order(1).asc().width(100)
                     .withSummary("total_count_", "COUNT(SELF)", format("Count:The total number of matching %ss.", AssetClass.ENTITY_TITLE)).also()
-                .addProp("desc").minWidth(300)
+                .addProp("desc").minWidth(300).also()
+                .addProp("active").minWidth(300)
                 .addPrimaryAction(standardEditAction)
                 .build();
 

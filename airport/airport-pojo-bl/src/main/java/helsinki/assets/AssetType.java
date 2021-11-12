@@ -15,6 +15,7 @@ import ua.com.fielden.platform.entity.annotation.KeyType;
 import ua.com.fielden.platform.entity.annotation.MapEntityTo;
 import ua.com.fielden.platform.entity.annotation.MapTo;
 import ua.com.fielden.platform.entity.annotation.Observable;
+import ua.com.fielden.platform.entity.annotation.Required;
 import ua.com.fielden.platform.entity.annotation.Title;
 import ua.com.fielden.platform.entity.annotation.mutator.BeforeChange;
 import ua.com.fielden.platform.entity.annotation.mutator.Handler;
@@ -35,7 +36,7 @@ import ua.com.fielden.platform.utils.Pair;
 @DescTitle("Description")
 @DisplayDescription
 @DescRequired
-@EntityTitle(value = "Asset Type", desc = "Used for classification of asset types.")
+@EntityTitle(value = "Asset Type", desc = "Asset types used for asset classification and represent categories of asset class.")
 // TODO: May need this later if some entities need to be automatically cascade-deactivated when this entity is deactivated
 // @DeactivatableDependencies({ Dependency1.class, Dependency2.class, Dependency3.class })
 public class AssetType extends ActivatableAbstractEntity<DynamicEntityKey> {
@@ -70,6 +71,7 @@ public class AssetType extends ActivatableAbstractEntity<DynamicEntityKey> {
     
     @IsProperty
     @MapTo
+    @Required
     @Title(value = "Asset Class", desc = "Associated asset class.")
     private AssetClass assetClass;
 

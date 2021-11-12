@@ -90,7 +90,9 @@ public class AssetTypeWebUiConfig {
                 .withScrollingConfig(standardStandaloneScrollingConfig(0))
                 .addProp("this").order(1).asc().width(100)
                     .withSummary("total_count_", "COUNT(SELF)", format("Count:The total number of matching %ss.", AssetType.ENTITY_TITLE)).also()
-                .addProp("desc").minWidth(300)
+                .addProp("desc").minWidth(300).also()
+                .addProp("assetClass").minWidth(300).also()
+                .addProp("active").minWidth(300)
                 .addPrimaryAction(standardEditAction)
                 .build();
 
@@ -114,7 +116,7 @@ public class AssetTypeWebUiConfig {
 
         final IMaster<AssetType> masterConfig = new SimpleMasterBuilder<AssetType>().forEntity(AssetType.class)
                 .addProp("name").asSinglelineText().also()
-                .addProp("assetClass").asSinglelineText().also()
+                .addProp("assetClass").asAutocompleter().also()
                 .addProp("desc").asMultilineText().also()
                 .addProp("active").asCheckbox().also()
                 .addAction(MasterActions.REFRESH).shortDesc(MASTER_CANCEL_ACTION_SHORT_DESC).longDesc(MASTER_CANCEL_ACTION_LONG_DESC)
