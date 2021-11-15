@@ -108,24 +108,22 @@ public class AssetTypeWebUiConfig {
     private EntityMaster<AssetType> createMaster(final Injector injector) {
         //final String layout = LayoutComposer.mkGridForMasterFitWidth(1, 2);
         final String layout = cell(
-                cell(cell(CELL_LAYOUT))
-               .cell(cell(CELL_LAYOUT))
-               .cell(cell(CELL_LAYOUT), FLEXIBLE_ROW)
-               .cell(cell(CELL_LAYOUT).skip().layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)),
-               FLEXIBLE_LAYOUT_WITH_PADDING).toString();
+                cell(cell(CELL_LAYOUT).repeat(2).withGapBetweenCells(MARGIN)).
+                cell(cell(CELL_LAYOUT)).
+                cell(cell(CELL_LAYOUT), FLEXIBLE_ROW), FLEXIBLE_LAYOUT_WITH_PADDING).toString();
 
         final IMaster<AssetType> masterConfig = new SimpleMasterBuilder<AssetType>().forEntity(AssetType.class)
                 .addProp("name").asSinglelineText().also()
+                .addProp("active").asCheckbox().also()
                 .addProp("assetClass").asAutocompleter().also()
                 .addProp("desc").asMultilineText().also()
-                .addProp("active").asCheckbox().also()
                 .addAction(MasterActions.REFRESH).shortDesc(MASTER_CANCEL_ACTION_SHORT_DESC).longDesc(MASTER_CANCEL_ACTION_LONG_DESC)
                 .addAction(MasterActions.SAVE).shortDesc(MASTER_SAVE_ACTION_SHORT_DESC).longDesc(MASTER_SAVE_ACTION_LONG_DESC)
                 .setActionBarLayoutFor(Device.DESKTOP, Optional.empty(), LayoutComposer.mkActionLayoutForMaster())
                 .setLayoutFor(Device.DESKTOP, Optional.empty(), layout)
                 .setLayoutFor(Device.TABLET, Optional.empty(), layout)
                 .setLayoutFor(Device.MOBILE, Optional.empty(), layout)
-                .withDimensions(mkDim(LayoutComposer.SIMPLE_ONE_COLUMN_MASTER_DIM_WIDTH, 480, Unit.PX))
+                .withDimensions(mkDim(LayoutComposer.SIMPLE_ONE_COLUMN_MASTER_DIM_WIDTH, 380, Unit.PX))
                 .done();
 
         return new EntityMaster<>(AssetType.class, masterConfig, injector);

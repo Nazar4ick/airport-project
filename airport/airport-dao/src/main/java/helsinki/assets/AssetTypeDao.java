@@ -29,9 +29,9 @@ public class AssetTypeDao extends CommonEntityDao<AssetType> implements AssetTyp
     }
 
     @Override
-        public AssetType new_() {
-            return super.new_().setActive(true);
-        }
+    public AssetType new_() {
+        return super.new_().setActive(true);
+    }
     
     @Override
     @SessionRequired

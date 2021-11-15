@@ -78,8 +78,8 @@ public class AssetClassWebUiConfig {
                 .addTopAction(standardSortAction).also()
                 .addTopAction(standardExportAction)
                 .addCrit("this").asMulti().autocompleter(AssetClass.class).also()
-                .addCrit("active").asMulti().bool().also()
-                .addCrit("desc").asMulti().text()
+                .addCrit("desc").asMulti().text().also()
+                .addCrit("active").asMulti().bool()
                 .setLayoutFor(Device.DESKTOP, Optional.empty(), layout)
                 .setLayoutFor(Device.TABLET, Optional.empty(), layout)
                 .setLayoutFor(Device.MOBILE, Optional.empty(), layout)
@@ -103,15 +103,13 @@ public class AssetClassWebUiConfig {
     private EntityMaster<AssetClass> createMaster(final Injector injector) {
         // final String layout = LayoutComposer.mkGridForMasterFitWidth(2, 1);
         final String layout = cell(
-                 cell(cell(CELL_LAYOUT))
-                .cell(cell(CELL_LAYOUT), FLEXIBLE_ROW)
-                .cell(cell(CELL_LAYOUT).skip().layoutForEach(CELL_LAYOUT).withGapBetweenCells(MARGIN)),
-                FLEXIBLE_LAYOUT_WITH_PADDING).toString();
+                cell(cell(CELL_LAYOUT).repeat(2).withGapBetweenCells(MARGIN)).
+                cell(cell(CELL_LAYOUT), FLEXIBLE_ROW), FLEXIBLE_LAYOUT_WITH_PADDING).toString();
                 
 
         final IMaster<AssetClass> masterConfig = new SimpleMasterBuilder<AssetClass>().forEntity(AssetClass.class)
-                .addProp("active").asCheckbox().also()
                 .addProp("name").asSinglelineText().also()
+                .addProp("active").asCheckbox().also()
                 .addProp("desc").asMultilineText().also()
                 .addAction(MasterActions.REFRESH).shortDesc(MASTER_CANCEL_ACTION_SHORT_DESC).longDesc(MASTER_CANCEL_ACTION_LONG_DESC)
                 .addAction(MasterActions.SAVE).shortDesc(MASTER_SAVE_ACTION_SHORT_DESC).longDesc(MASTER_SAVE_ACTION_LONG_DESC)
