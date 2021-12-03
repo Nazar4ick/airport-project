@@ -22,6 +22,7 @@ import com.google.inject.Injector;
 import helsinki.assets.AssetClass;
 import helsinki.assets.AssetType;
 import helsinki.assets.actions.AssetTypeBatchUpdateForAssetClassAction;
+import helsinki.assets.actions.producers.AssetTypeBatchUpdateForAssetClassActionProducer;
 import helsinki.assets.producers.AssetTypeProducer;
 import helsinki.common.LayoutComposer;
 import helsinki.common.StandardActions;
@@ -61,6 +62,8 @@ public class AssetTypeWebUiConfig {
         builder.register(centre);
         master = createMaster(injector);
         builder.register(master);
+        
+        builder.register(createAssetTypeBatchUpdateForAssetClassActionMaster(injector));
     }
 
     /**
@@ -81,7 +84,7 @@ public class AssetTypeWebUiConfig {
         
         final EntityActionConfig topActionToBatchUpdateAssetClasses = action(AssetTypeBatchUpdateForAssetClassAction.class)
                 .withContext(context().withSelectedEntities().build())
-                .postActionSuccess(() -> new JsCode("self.$.egi.clearPageSelection()"))
+                //.postActionSuccess(() -> new JsCode("self.$.egi.clearPageSelection()"))
                 .icon("icons:check-circle")
                 .withStyle(StandardActionsStyles.CUSTOM_ACTION_COLOUR)
                 .shortDesc("Batch update for Asset Types")
@@ -143,5 +146,22 @@ public class AssetTypeWebUiConfig {
                 .done();
 
         return new EntityMaster<>(AssetType.class, AssetTypeProducer.class, masterConfig, injector);
+    }
+    
+    private EntityMaster<AssetTypeBatchUpdateForAssetClassAction> createAssetTypeBatchUpdateForAssetClassActionMaster(final Injector injector) {
+        final String layout = LayoutComposer.mkGridForMasterFitWidth(1, 1);
+
+        final var masterConfig = new SimpleMasterBuilder<AssetTypeBatchUpdateForAssetClassAction>().forEntity(AssetTypeBatchUpdateForAssetClassAction.class)
+                .addProp("assetClass").asAutocompleter().also()
+                .addAction(MasterActions.REFRESH).shortDesc(MASTER_CANCEL_ACTION_SHORT_DESC).longDesc(MASTER_CANCEL_ACTION_LONG_DESC)
+                .addAction(MasterActions.SAVE).shortDesc(MASTER_SAVE_ACTION_SHORT_DESC).longDesc(MASTER_SAVE_ACTION_LONG_DESC)
+                .setActionBarLayoutFor(Device.DESKTOP, Optional.empty(), LayoutComposer.mkActionLayoutForMaster())
+                .setLayoutFor(Device.DESKTOP, Optional.empty(), layout)
+                .setLayoutFor(Device.TABLET, Optional.empty(), layout)
+                .setLayoutFor(Device.MOBILE, Optional.empty(), layout)
+                .withDimensions(mkDim(300, 200, Unit.PX))
+                .done();
+
+        return new EntityMaster<>(AssetTypeBatchUpdateForAssetClassAction.class, AssetTypeBatchUpdateForAssetClassActionProducer.class, masterConfig, injector);
     }
 }
