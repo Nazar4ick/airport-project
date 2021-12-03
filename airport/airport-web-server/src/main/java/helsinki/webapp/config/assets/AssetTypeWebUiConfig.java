@@ -1,5 +1,6 @@
 package helsinki.webapp.config.assets;
 
+import static ua.com.fielden.platform.web.centre.api.context.impl.EntityCentreContextSelector.context;
 import static helsinki.common.LayoutComposer.CELL_LAYOUT;
 import static helsinki.common.LayoutComposer.FLEXIBLE_LAYOUT_WITH_PADDING;
 import static helsinki.common.LayoutComposer.FLEXIBLE_ROW;
@@ -11,6 +12,7 @@ import static helsinki.common.StandardActionsStyles.MASTER_SAVE_ACTION_SHORT_DES
 import static helsinki.common.StandardScrollingConfigs.standardStandaloneScrollingConfig;
 import static java.lang.String.format;
 import static ua.com.fielden.platform.web.PrefDim.mkDim;
+import static ua.com.fielden.platform.web.centre.api.actions.impl.EntityActionBuilder.action;
 import static ua.com.fielden.platform.web.layout.api.impl.LayoutBuilder.cell;
 
 import java.util.Optional;
@@ -19,9 +21,11 @@ import com.google.inject.Injector;
 
 import helsinki.assets.AssetClass;
 import helsinki.assets.AssetType;
+import helsinki.assets.actions.AssetTypeBatchUpdateForAssetClassAction;
 import helsinki.assets.producers.AssetTypeProducer;
 import helsinki.common.LayoutComposer;
 import helsinki.common.StandardActions;
+import helsinki.common.StandardActionsStyles;
 import helsinki.main.menu.assets.MiAssetType;
 import ua.com.fielden.platform.web.PrefDim.Unit;
 import ua.com.fielden.platform.web.action.CentreConfigurationWebUiConfig.CentreConfigActions;
@@ -31,6 +35,7 @@ import ua.com.fielden.platform.web.centre.api.EntityCentreConfig;
 import ua.com.fielden.platform.web.centre.api.actions.EntityActionConfig;
 import ua.com.fielden.platform.web.centre.api.impl.EntityCentreBuilder;
 import ua.com.fielden.platform.web.interfaces.ILayout.Device;
+import ua.com.fielden.platform.web.minijs.JsCode;
 import ua.com.fielden.platform.web.view.master.EntityMaster;
 import ua.com.fielden.platform.web.view.master.api.IMaster;
 import ua.com.fielden.platform.web.view.master.api.actions.MasterActions;
@@ -73,6 +78,15 @@ public class AssetTypeWebUiConfig {
         final EntityActionConfig standardEditAction = StandardActions.EDIT_ACTION.mkAction(AssetType.class);
         final EntityActionConfig standardSortAction = CentreConfigActions.CUSTOMISE_COLUMNS_ACTION.mkAction();
         builder.registerOpenMasterAction(AssetType.class, standardEditAction);
+        
+        final EntityActionConfig topActionToBatchUpdateAssetClasses = action(AssetTypeBatchUpdateForAssetClassAction.class)
+                .withContext(context().withSelectedEntities().build())
+                .postActionSuccess(() -> new JsCode("self.$.egi.clearPageSelection()"))
+                .icon("icons:check-circle")
+                .withStyle(StandardActionsStyles.CUSTOM_ACTION_COLOUR)
+                .shortDesc("Batch update for Asset Types")
+                .longDesc("Batch update property asset class for selected types")
+                .build();
 
         final EntityCentreConfig<AssetType> ecc = EntityCentreBuilder.centreFor(AssetType.class)
                 //.runAutomatically()
@@ -80,7 +94,8 @@ public class AssetTypeWebUiConfig {
                 .addTopAction(standardNewAction).also()
                 .addTopAction(standardDeleteAction).also()
                 .addTopAction(standardSortAction).also()
-                .addTopAction(standardExportAction)
+                .addTopAction(standardExportAction).also()
+                .addTopAction(topActionToBatchUpdateAssetClasses)
                 .addCrit("this").asMulti().autocompleter(AssetType.class).also()
                 .addCrit("active").asMulti().bool().also()
                 .addCrit("assetClass").asMulti().autocompleter(AssetClass.class).also()
