@@ -16,6 +16,7 @@ import helsinki.assets.ui_actions.OpenAssetClassMasterAction;
 import helsinki.assets.master.menu.actions.AssetClassMaster_OpenMain_MenuItem;
 import helsinki.assets.master.menu.actions.AssetClassMaster_OpenAssetType_MenuItem;
 import helsinki.assets.actions.AssetTypeBatchUpdateForAssetClassAction;
+import helsinki.assets.Asset;
 
 /**
  * A class to register domain entities.
@@ -36,6 +37,7 @@ public class ApplicationDomain implements IApplicationDomainProvider {
         add(AssetClassMaster_OpenMain_MenuItem.class);
         add(AssetClassMaster_OpenAssetType_MenuItem.class);
         add(AssetTypeBatchUpdateForAssetClassAction.class);
+        add(Asset.class);
     }
 
     private static void add(final Class<? extends AbstractEntity<?>> domainType) {

@@ -84,7 +84,7 @@ public class AssetTypeWebUiConfig {
         
         final EntityActionConfig topActionToBatchUpdateAssetClasses = action(AssetTypeBatchUpdateForAssetClassAction.class)
                 .withContext(context().withSelectedEntities().build())
-                //.postActionSuccess(() -> new JsCode("self.$.egi.clearPageSelection()"))
+                .postActionSuccess(() -> new JsCode("self.$.egi.clearPageSelection()"))
                 .icon("icons:check-circle")
                 .withStyle(StandardActionsStyles.CUSTOM_ACTION_COLOUR)
                 .shortDesc("Batch update for Asset Types")
