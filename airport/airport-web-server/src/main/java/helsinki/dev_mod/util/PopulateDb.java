@@ -1,20 +1,20 @@
 package helsinki.dev_mod.util;
 
 import static java.lang.String.format;
+import static org.apache.logging.log4j.LogManager.getLogger;
 
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Logger;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
-import org.apache.logging.log4j.Logger;
-
+import helsinki.assets.AssetClass;
+import helsinki.assets.AssetType;
 import helsinki.config.ApplicationDomain;
 import helsinki.personnel.Person;
-
 import ua.com.fielden.platform.devdb_support.DomainDrivenDataPopulation;
 import ua.com.fielden.platform.entity.AbstractEntity;
 import ua.com.fielden.platform.persistence.HibernateUtil;
@@ -77,6 +77,12 @@ public class PopulateDb extends DomainDrivenDataPopulation {
         
         setupUser(User.system_users.SU, "helsinki");
         setupPerson(User.system_users.SU, "helsinki", "Super", "User");
+        
+        save(new_(AssetClass.class).setName("Buildings").setDesc("All buildings and other structures"));
+        final var elAssetClass = save(new_(AssetClass.class).setName("Electrical").setDesc("Electrical assets"));
+        save(new_(AssetType.class).setName("Radar").setAssetClass(elAssetClass).setDesc("Radar systems."));
+        save(new_(AssetType.class).setName("Control_Towers").setAssetClass(elAssetClass).setDesc("Control towers."));
+        
 
         LOGGER.info("Completed database creation and population.");
 	}

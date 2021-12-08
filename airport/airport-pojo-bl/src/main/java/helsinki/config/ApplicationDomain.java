@@ -10,6 +10,13 @@ import helsinki.personnel.Person;
 import ua.com.fielden.platform.basic.config.IApplicationDomainProvider;
 import ua.com.fielden.platform.domain.PlatformDomainTypes;
 import ua.com.fielden.platform.entity.AbstractEntity;
+import helsinki.assets.AssetClass;
+import helsinki.assets.AssetType;
+import helsinki.assets.ui_actions.OpenAssetClassMasterAction;
+import helsinki.assets.master.menu.actions.AssetClassMaster_OpenMain_MenuItem;
+import helsinki.assets.master.menu.actions.AssetClassMaster_OpenAssetType_MenuItem;
+import helsinki.assets.actions.AssetTypeBatchUpdateForAssetClassAction;
+import helsinki.assets.Asset;
 
 /**
  * A class to register domain entities.
@@ -24,6 +31,13 @@ public class ApplicationDomain implements IApplicationDomainProvider {
     static {
         entityTypes.addAll(PlatformDomainTypes.types);
         add(Person.class);
+        add(AssetClass.class);
+        add(AssetType.class);
+        add(OpenAssetClassMasterAction.class);
+        add(AssetClassMaster_OpenMain_MenuItem.class);
+        add(AssetClassMaster_OpenAssetType_MenuItem.class);
+        add(AssetTypeBatchUpdateForAssetClassAction.class);
+        add(Asset.class);
     }
 
     private static void add(final Class<? extends AbstractEntity<?>> domainType) {
