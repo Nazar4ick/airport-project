@@ -11,6 +11,7 @@ import helsinki.security.tokens.persistent.Asset_CanDelete_Token;
 import helsinki.security.tokens.persistent.Asset_CanSave_Token;
 import ua.com.fielden.platform.dao.CommonEntityDao;
 import ua.com.fielden.platform.dao.annotations.SessionRequired;
+import ua.com.fielden.platform.entity.AbstractEntity;
 import ua.com.fielden.platform.entity.annotation.EntityType;
 import ua.com.fielden.platform.entity.fetch.IFetchProvider;
 import ua.com.fielden.platform.entity.query.IFilter;
@@ -35,10 +36,9 @@ public class AssetDao extends CommonEntityDao<Asset> implements AssetCo {
     }
     
     @Override
-        public Asset new_() {
-            // TODO Auto-generated method stub
-            return super.new_().setNumber(DEFAULT_KEY_VALUE);
-        }
+    public Asset new_() {
+        return super.new_().setNumber(DEFAULT_KEY_VALUE).setActive(true);
+    }
 
     @Override
     @SessionRequired
@@ -53,7 +53,12 @@ public class AssetDao extends CommonEntityDao<Asset> implements AssetCo {
         }
         
         try {
-            return super.save(asset);
+            final var savedAsset = super.save(asset);
+            if(!wasPersisted) {
+                final AssetFinDetCo coAssetFinDet = co(AssetFinDet.class);
+                coAssetFinDet.save(coAssetFinDet.new_().setKey(savedAsset));
+            }
+            return savedAsset;
         } catch (final Exception ex) {
             if (!wasPersisted) {
                 asset.beginInitialising();
