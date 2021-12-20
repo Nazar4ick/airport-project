@@ -30,6 +30,8 @@ public class AssetOwnershipOrganisationDefiner extends AbstractAfterChangeEventH
                 entity.setRole(null);
                 entity.setBu(null);
             }
+        } else {
+            mpOrganisation.setRequired(!StringUtils.isEmpty(value), AssetOwnershipCo.ERR_REQUIRED);
         }
     }
 }

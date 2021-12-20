@@ -30,6 +30,8 @@ public class AssetOwnershipRoleDefiner extends AbstractAfterChangeEventHandler<S
                 entity.setOrganisation(null);
                 entity.setBu(null);
             }
+        } else {
+            mpRole.setRequired(!StringUtils.isEmpty(value), AssetOwnershipCo.ERR_REQUIRED);
         }
     }
 }
