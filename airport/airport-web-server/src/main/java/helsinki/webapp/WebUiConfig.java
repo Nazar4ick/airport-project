@@ -78,8 +78,8 @@ public class WebUiConfig extends AbstractWebUiConfig {
 
         // Users and Personnel Module
         final PersonWebUiConfig personWebUiConfig = PersonWebUiConfig.register(injector(), builder);
-        final UserWebUiConfig userWebUiConfig = new UserWebUiConfig(injector());
-        final UserRoleWebUiConfig userRoleWebUiConfig = new UserRoleWebUiConfig(injector());
+        final UserWebUiConfig userWebUiConfig = UserWebUiConfig.register(injector(), builder);
+        final UserRoleWebUiConfig userRoleWebUiConfig = UserRoleWebUiConfig.register(injector(), builder);
         final SecurityMatrixWebUiConfig securityConfig = SecurityMatrixWebUiConfig.register(injector(), configApp());
         
         // Assets Module
